@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Terms of Use for Density.">
+  <title>Terms of Use — Density</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root { color-scheme:dark; --bg:#000; --fg:#fff; --muted:#a3a3a3; --line:#333; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; min-height:100%; background:var(--bg); }
+    body { color:var(--fg); font-family:"Sora",sans-serif; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; }
+    .topbar { min-height:82px; padding:22px clamp(20px,5vw,68px); display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:10px; color:var(--fg); text-decoration:none; font-size:19px; font-weight:600; letter-spacing:-.055em; }
+    .brand img { width:25px; height:28px; object-fit:contain; }
+    .back { font-size:12px; text-decoration:none; color:var(--muted); }
+    .back:hover { color:var(--fg); }
+    main { width:min(760px, calc(100% - 40px)); margin:0 auto; padding:68px 0 100px; }
+    h1 { margin:0 0 12px; font-size:clamp(34px,7vw,54px); line-height:1.08; letter-spacing:-.07em; }
+    .intro { color:var(--muted); font-size:13px; margin:0 0 42px; }
+    #content { font-size:14px; line-height:1.8; color:#e5e5e5; overflow-wrap:anywhere; }
+    #content h1 { margin:42px 0 14px; font-size:30px; }
+    #content h2 { margin:38px 0 12px; font-size:21px; letter-spacing:-.04em; color:#fff; }
+    #content h3 { margin:28px 0 10px; font-size:16px; color:#fff; }
+    #content p,#content ul,#content ol { margin:0 0 17px; }
+    #content ul,#content ol { padding-left:23px; }
+    #content li { padding-left:4px; margin:5px 0; }
+    #content a { text-decoration:underline; text-underline-offset:3px; }
+    #content hr { border:0; border-top:1px solid var(--line); margin:30px 0; }
+    #content code { padding:2px 5px; background:#171717; border-radius:3px; }
+    .error { color:#fca5a5; }
+    footer { border-top:1px solid var(--line); padding:22px clamp(20px,5vw,68px); color:var(--muted); font-size:11px; }
+    @media(max-width:520px) { main { padding-top:48px; } .topbar { min-height:70px; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="Density home">
+      <img src="../assets/icon.svg" alt="">
+      <span>density</span>
+    </a>
+    <a class="back" href="../">Back to home</a>
+  </header>
+  <main>
+    <h1>Terms of Use</h1>
+    <p class="intro">Density · Legal information</p>
+    <article id="content" aria-live="polite">Loading…</article>
+  </main>
+  <footer>© Density. For questions, contact <a href="mailto:densityapp@proton.me">densityapp@proton.me</a>.</footer>
+  <script>
+    (async () => {
+      const target = document.getElementById("content");
+      try {
+        const response = await fetch("./terms.md");
+        if (!response.ok) throw new Error("Could not load terms.md (" + response.status + ")");
+        const markdown = await response.text();
+        if (!window.marked) throw new Error("Markdown renderer did not load.");
+        target.innerHTML = marked.parse(markdown);
+      } catch (error) {
+        target.innerHTML = '<p class="error"></p>';
+        target.querySelector(".error").textContent = error.message;
+      }
+    })();
+  </script>
+</body>
+</html>
